@@ -1,0 +1,36 @@
+{
+  "name": "@webdevstudios/wds-headless-blocks",
+  "version": "1.0.0",
+  "private": true,
+  "description": "WDS Headless extension handling Gutenberg block functionality.",
+  "author": "WebDevStudios <contact@webdevstudios.com>",
+  "license": "GPL-2.0-or-later",
+  "keywords": [
+    "next.js",
+    "wordpress"
+  ],
+  "homepage": "https://github.com/WebDevStudios/wds-headless-blocks/blob/main/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WebDevStudios/wds-headless-blocks/tree/main/"
+  },
+  "bugs": {
+    "url": "https://github.com/WebDevStudios/wds-headless-blocks/issues"
+  },
+  "engines": {
+    "node": "14",
+    "npm": "7"
+  },
+  "scripts": {
+    "format": "npx prettier  '**/*.{js,jsx,ts,tsx,md,html,css,scss,json,yml}' --write || true",
+    "lint": "npm run format && npm run lint:js",
+    "lint:js": "npx eslint '**/*.{js,jsx,ts.tsx}' --fix || true"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jsdoc": "^36.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1"
+  }
+}
