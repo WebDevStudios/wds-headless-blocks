@@ -13,12 +13,21 @@ jobs:
     strategy:
       matrix:
         php-versions: ['7.4']
+        node-version: [14.x]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           token: ${{ github.token }}
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Use NPM 7
+        run: npm i -g npm@latest
 
       - name: Setup PHP ${{ matrix.php-versions }}
         uses: shivammathur/setup-php@v2
@@ -33,8 +42,23 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.OS }}-composer-
 
-      - name: Install dependencies
-        run: composer install
+      - name: Cache NPM dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
-      - name: Lint
+      - name: Install dependencies
+        run: |
+          composer install
+          npm i
+
+      - name: Lint PHP
         run: composer run lint
+
+      - name: Lint JavaScript
+        run: npm run lint
