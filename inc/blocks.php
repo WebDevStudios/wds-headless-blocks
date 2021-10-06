@@ -62,7 +62,7 @@ function enqueue_block_editor_assets() {
 	wp_enqueue_script(
 		'wds-headless-blocks',
 		WDS_HEADLESS_BLOCKS_PLUGIN_URL . '/js/blocks.js',
-		[ 'wp-blocks', 'wp-element' ],
+		[ 'wp-blocks', 'wp-element', 'lodash' ],
 		WDS_HEADLESS_BLOCKS_VERSION,
 		true
 	);

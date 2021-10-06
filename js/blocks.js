@@ -5,10 +5,12 @@
  * @since 1.0.0
  */
 
+/* global wp, lodash */
 const {validateThemeColors, validateThemeGradients} = wp.blockEditor
 const {useEffect, createElement} = wp.element
-const {addFilter, applyFilters} = wp.hooks
+const {addFilter} = wp.hooks
 const {createHigherOrderComponent} = wp.compose
+const {assign} = lodash
 
 /**
  * Customize core block settings.
@@ -38,7 +40,9 @@ function wdsAddColorPaletteHexValues(settings) {
   const attributes = {}
 
   // Add background color hex attribute.
-  if (settings.attributes.hasOwnProperty('backgroundColor')) {
+  if (
+    Object.prototype.hasOwnProperty.call(settings.attributes, 'backgroundColor')
+  ) {
     attributes.backgroundColorHex = {
       type: 'string',
       default: ''
@@ -46,7 +50,7 @@ function wdsAddColorPaletteHexValues(settings) {
   }
 
   // Add gradient background hex attribute.
-  if (settings.attributes.hasOwnProperty('gradient')) {
+  if (Object.prototype.hasOwnProperty.call(settings.attributes, 'gradient')) {
     attributes.gradientHex = {
       type: 'string',
       default: ''
@@ -54,7 +58,7 @@ function wdsAddColorPaletteHexValues(settings) {
   }
 
   // Add main color hex attribute.
-  if (settings.attributes.hasOwnProperty('mainColor')) {
+  if (Object.prototype.hasOwnProperty.call(settings.attributes, 'mainColor')) {
     attributes.mainColorHex = {
       type: 'string',
       default: ''
@@ -62,7 +66,9 @@ function wdsAddColorPaletteHexValues(settings) {
   }
 
   // Add overlay color hex attribute.
-  if (settings.attributes.hasOwnProperty('overlayColor')) {
+  if (
+    Object.prototype.hasOwnProperty.call(settings.attributes, 'overlayColor')
+  ) {
     attributes.overlayColorHex = {
       type: 'string',
       default: ''
@@ -70,15 +76,15 @@ function wdsAddColorPaletteHexValues(settings) {
   }
 
   // Add text color hex attribute.
-  if (settings.attributes.hasOwnProperty('textColor')) {
+  if (Object.prototype.hasOwnProperty.call(settings.attributes, 'textColor')) {
     attributes.textColorHex = {
       type: 'string',
       default: ''
     }
   }
 
-  return lodash.assign({}, settings, {
-    attributes: lodash.assign({}, settings.attributes, attributes)
+  return assign({}, settings, {
+    attributes: assign({}, settings.attributes, attributes)
   })
 }
 
