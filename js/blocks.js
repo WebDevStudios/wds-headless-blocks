@@ -227,3 +227,34 @@ addFilter(
   'wds/filterButtonAttrs',
   wdsUpdateButtonAtrrs
 )
+
+/**
+ * Filter block edit function to set custom button attributes.
+ *
+ * @author WebDevStudios
+ * @since NEXT
+ */
+const withButtonAttrs = createHigherOrderComponent((BlockEdit) => {
+  return (props) => {
+    const {
+      attributes: {url},
+      name
+    } = props
+
+    useEffect(() => {
+      if (name !== 'core/button' || !url) {
+        return
+      }
+
+      // Determine value of urlExternal by comparing url to FE/BE URLs.
+      const hasFrontendUrl = frontendUrl ? url.indexOf(frontendUrl) >= 0 : false
+      const hasBackendUrl = backendUrl ? url.indexOf(backendUrl) >= 0 : false
+
+      props.attributes.urlExternal = !hasFrontendUrl && !hasBackendUrl
+    }, [name, url])
+
+    return createElement(BlockEdit, props)
+  }
+}, 'withColorPaletteHexValues')
+
+addFilter('editor.BlockEdit', 'wds/filterBlockEditButtonAttrs', withButtonAttrs)
