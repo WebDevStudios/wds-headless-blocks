@@ -72,7 +72,7 @@ function enqueue_block_editor_assets() {
 		return;
 	}
 
-	// Add FE URL to blocks script.
-	wp_add_inline_script( 'wds-headless-blocks', 'const frontendUrl = "' . untrailingslashit( HEADLESS_FRONTEND_URL ) . '"', 'before' );
+	// Add FE & BE URLs to blocks script.
+	wp_add_inline_script( 'wds-headless-blocks', 'const frontendUrl = "' . untrailingslashit( HEADLESS_FRONTEND_URL ) . '"; const backendUrl = "' . untrailingslashit( site_url() ) . '";', 'before' );
 }
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_block_editor_assets' );
