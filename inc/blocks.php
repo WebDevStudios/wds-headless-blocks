@@ -61,7 +61,7 @@ add_action( 'after_setup_theme', __NAMESPACE__ . '\customize_block_support' );
 function enqueue_block_editor_assets() {
 	wp_enqueue_script(
 		'wds-headless-blocks',
-		WDS_HEADLESS_BLOCKS_PLUGIN_URL . '/js/blocks.js',
+		untrailingslashit( WDS_HEADLESS_BLOCKS_PLUGIN_URL ) . '/js/blocks.js',
 		[ 'wp-blocks', 'wp-element', 'lodash' ],
 		WDS_HEADLESS_BLOCKS_VERSION,
 		true
