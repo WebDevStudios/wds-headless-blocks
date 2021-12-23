@@ -66,5 +66,13 @@ function enqueue_block_editor_assets() {
 		WDS_HEADLESS_BLOCKS_VERSION,
 		true
 	);
+
+
+	if ( ! defined( 'HEADLESS_FRONTEND_URL' ) ) {
+		return;
+	}
+
+	// Add FE URL to blocks script.
+	wp_add_inline_script( 'wds-headless-blocks', 'const frontendUrl = "' . untrailingslashit( HEADLESS_FRONTEND_URL ) . '"', 'before' );
 }
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_block_editor_assets' );
