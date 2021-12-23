@@ -5,7 +5,7 @@
  * @since 1.0.0
  */
 
-/* global wp, lodash */
+/* global wp, lodash, frontendUrl, backendUrl */
 const {validateThemeColors, validateThemeGradients} = wp.blockEditor
 const {useEffect, createElement} = wp.element
 const {addFilter} = wp.hooks
@@ -194,4 +194,36 @@ addFilter(
   'editor.BlockEdit',
   'wds/filterBlockEditColorAttrs',
   withColorPaletteHexValues
+)
+
+/**
+ * Filter block registration to add custom attributes to button block.
+ *
+ * @author WebDevStudios
+ * @since NEXT
+ * @param  {object} settings Block settings config.
+ * @return {object}          Block settings config.
+ */
+function wdsUpdateButtonAtrrs(settings) {
+  if (settings.name !== 'core/button') {
+    return settings
+  }
+
+  const attributes = {}
+
+  // Add urlExternal attribute.
+  attributes.urlExternal = {
+    type: 'boolean',
+    default: false
+  }
+
+  return assign({}, settings, {
+    attributes: assign({}, settings.attributes, attributes)
+  })
+}
+
+addFilter(
+  'blocks.registerBlockType',
+  'wds/filterButtonAttrs',
+  wdsUpdateButtonAtrrs
 )
