@@ -255,6 +255,6 @@ const withButtonAttrs = createHigherOrderComponent((BlockEdit) => {
 
     return createElement(BlockEdit, props)
   }
-}, 'withColorPaletteHexValues')
+}, 'withButtonAttrs')
 
 addFilter('editor.BlockEdit', 'wds/filterBlockEditButtonAttrs', withButtonAttrs)
