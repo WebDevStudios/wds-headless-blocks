@@ -67,7 +67,6 @@ function enqueue_block_editor_assets() {
 		true
 	);
 
-
 	if ( ! defined( 'HEADLESS_FRONTEND_URL' ) ) {
 		return;
 	}
