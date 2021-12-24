@@ -61,10 +61,17 @@ add_action( 'after_setup_theme', __NAMESPACE__ . '\customize_block_support' );
 function enqueue_block_editor_assets() {
 	wp_enqueue_script(
 		'wds-headless-blocks',
-		WDS_HEADLESS_BLOCKS_PLUGIN_URL . '/js/blocks.js',
+		untrailingslashit( WDS_HEADLESS_BLOCKS_PLUGIN_URL ) . '/js/blocks.js',
 		[ 'wp-blocks', 'wp-element', 'lodash' ],
 		WDS_HEADLESS_BLOCKS_VERSION,
 		true
 	);
+
+	if ( ! defined( 'HEADLESS_FRONTEND_URL' ) ) {
+		return;
+	}
+
+	// Add FE & BE URLs to blocks script.
+	wp_add_inline_script( 'wds-headless-blocks', 'const frontendUrl = "' . untrailingslashit( HEADLESS_FRONTEND_URL ) . '"; const backendUrl = "' . untrailingslashit( site_url() ) . '";', 'before' );
 }
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_block_editor_assets' );

@@ -5,7 +5,7 @@
  * @since 1.0.0
  */
 
-/* global wp, lodash */
+/* global wp, lodash, frontendUrl, backendUrl */
 const {validateThemeColors, validateThemeGradients} = wp.blockEditor
 const {useEffect, createElement} = wp.element
 const {addFilter} = wp.hooks
@@ -195,3 +195,66 @@ addFilter(
   'wds/filterBlockEditColorAttrs',
   withColorPaletteHexValues
 )
+
+/**
+ * Filter block registration to add custom attributes to button block.
+ *
+ * @author WebDevStudios
+ * @since NEXT
+ * @param  {object} settings Block settings config.
+ * @return {object}          Block settings config.
+ */
+function wdsUpdateButtonAtrrs(settings) {
+  if (settings.name !== 'core/button') {
+    return settings
+  }
+
+  const attributes = {}
+
+  // Add urlExternal attribute.
+  attributes.urlExternal = {
+    type: 'boolean',
+    default: false
+  }
+
+  return assign({}, settings, {
+    attributes: assign({}, settings.attributes, attributes)
+  })
+}
+
+addFilter(
+  'blocks.registerBlockType',
+  'wds/filterButtonAttrs',
+  wdsUpdateButtonAtrrs
+)
+
+/**
+ * Filter block edit function to set custom button attributes.
+ *
+ * @author WebDevStudios
+ * @since NEXT
+ */
+const withButtonAttrs = createHigherOrderComponent((BlockEdit) => {
+  return (props) => {
+    const {
+      attributes: {url},
+      name
+    } = props
+
+    useEffect(() => {
+      if (name !== 'core/button' || !url) {
+        return
+      }
+
+      // Determine value of urlExternal by comparing url to FE/BE URLs.
+      const hasFrontendUrl = frontendUrl ? url.indexOf(frontendUrl) >= 0 : false
+      const hasBackendUrl = backendUrl ? url.indexOf(backendUrl) >= 0 : false
+
+      props.attributes.urlExternal = !hasFrontendUrl && !hasBackendUrl
+    }, [name, url])
+
+    return createElement(BlockEdit, props)
+  }
+}, 'withButtonAttrs')
+
+addFilter('editor.BlockEdit', 'wds/filterBlockEditButtonAttrs', withButtonAttrs)
